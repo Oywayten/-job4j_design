@@ -38,11 +38,10 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
         Objects.checkIndex(index, size);
         T elem = container[index];
         final int newSize = size - 1;
-        if (newSize > index) {
-            System.arraycopy(container, index + 1, container, index, newSize - index);
-            size = newSize;
-            container[size] = null;
-        }
+        System.arraycopy(container, index + 1, container, index, newSize - index);
+        size = newSize;
+        container[size] = null;
+        modCount++;
         return elem;
     }
 
