@@ -2,13 +2,11 @@ package ru.job4j.generic;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
     private final Map<String, T> storage = new HashMap<>();
 
-    /*весь метод ниже можно заменить на putIfAbsent*/
     @Override
     public void add(T model) {
         T v = storage.get(model.getId());
@@ -19,22 +17,22 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
+        boolean b = false;
         if (storage.containsKey(id)) {
             storage.put(id, model);
-            return true;
-        } else {
-            return false;
+            b = true;
         }
+        return b;
     }
 
     @Override
     public boolean delete(String id) {
+        boolean b = false;
         if (storage.containsKey(id)) {
             storage.remove(id);
-            return true;
-        } else {
-            return false;
+            b = true;
         }
+        return b;
     }
 
     @Override
