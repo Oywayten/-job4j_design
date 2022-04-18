@@ -14,18 +14,17 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
-    private T[] growX2() {
+    private void growX2() {
         if (container.length == 0) {
             container = Arrays.copyOf(container, 1);
         }
         container = Arrays.copyOf(container, container.length * 2);
-        return  container;
     }
 
     @Override
     public void add(T value) {
         if (size == container.length) {
-            container = growX2();
+            growX2();
         }
         container[size] = value;
         size = size + 1;
@@ -43,9 +42,8 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
     @Override
     public T remove(int index) {
         T elem = get(index);
-        final int newSize = size - 1;
-        System.arraycopy(container, index + 1, container, index, newSize - index);
-        size = newSize;
+        size--;
+        System.arraycopy(container, index + 1, container, index, size - index);
         container[size] = null;
         modCount++;
         return elem;
