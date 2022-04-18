@@ -14,10 +14,18 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
+    private T[] growX2() {
+        if (container.length == 0) {
+            container = Arrays.copyOf(container, 1);
+        }
+        container = Arrays.copyOf(container, container.length * 2);
+        return  container;
+    }
+
     @Override
     public void add(T value) {
         if (size == container.length) {
-            container = Arrays.copyOf(container, container.length * 2);
+            container = growX2();
         }
         container[size] = value;
         size = size + 1;
@@ -26,8 +34,7 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T oldValue = container[index];
+        T oldValue = get(index);
         container[index] = newValue;
         modCount++;
         return oldValue;
@@ -35,8 +42,7 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T elem = container[index];
+        T elem = get(index);
         final int newSize = size - 1;
         System.arraycopy(container, index + 1, container, index, newSize - index);
         size = newSize;
@@ -64,6 +70,9 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return point < size;
             }
 
@@ -71,8 +80,6 @@ public class SimpleArrayList<T> implements ru.job4j.list.List<T> {
             public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                } else if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
                 }
                 return container[point++];
             }
