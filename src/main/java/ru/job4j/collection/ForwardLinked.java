@@ -3,6 +3,10 @@ package ru.job4j.collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Односвязный список
+ * @param <T> параметр типа объектов для которых подходит список
+ */
 public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
 
@@ -17,6 +21,13 @@ public class ForwardLinked<T> implements Iterable<T> {
             tail = tail.next;
         }
         tail.next = node;
+    }
+
+    public void addFirst(T value) {
+        Node<T> newNode = new Node<>(value, null);
+        Node<T> tmpNode = head;
+        head = newNode;
+        head.next = tmpNode;
     }
 
     @Override
