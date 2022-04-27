@@ -68,7 +68,7 @@ public class SimpleLinkedList<E> implements List<E> {
                     throw new ConcurrentModificationException();
                 }
 
-                return tmp != null && tmp.item != null;
+                return tmp != null;
             }
 
             @Override
