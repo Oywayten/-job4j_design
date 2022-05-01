@@ -56,8 +56,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(K key) {
-//        Objects.checkIndex(indexFor(hash(key.hashCode())), capacity)
-//        return table[indexFor(hash(key.hashCode()))].value;
         return (indexFor(hash(key.hashCode())) <= capacity
                 || indexFor(hash(key.hashCode())) >= 0)
                 && table[indexFor(hash(key.hashCode()))] != null ? table[indexFor(hash(key.hashCode()))].value : null;
