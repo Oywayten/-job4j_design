@@ -125,20 +125,22 @@ public class SimpleMap<K, V> implements Map<K, V> {
             this.value = value;
         }
 
-        public final int hashCode() {
-            return Objects.hashCode(key) ^ Objects.hashCode(value);
-        }
-
-        public final boolean equals(Object o) {
-            if (o == this) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
                 return true;
             }
-
-            return o instanceof java.util.Map.Entry<?, ?> e
-                    && Objects.equals(key, e.getKey())
-                    && Objects.equals(value, e.getValue());
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            MapEntry<?, ?> mapEntry = (MapEntry<?, ?>) o;
+            return Objects.equals(key, mapEntry.key) && Objects.equals(value, mapEntry.value);
         }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
     }
 
 }
