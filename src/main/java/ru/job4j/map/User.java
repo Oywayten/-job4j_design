@@ -1,7 +1,7 @@
 package ru.job4j.map;
 
 import java.util.*;
-import java.util.spi.CalendarDataProvider;
+import java.util.Map;
 
 public class User {
     private String name;
