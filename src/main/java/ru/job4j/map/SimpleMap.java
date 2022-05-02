@@ -24,9 +24,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
         MapEntry<K, V> isEntry = table[index];
         MapEntry<K, V> newEntry = new MapEntry<>(key, value);
         boolean b = isEntry == null;
-        table[index] = newEntry;
-        modCount++;
-        count++;
+        if (b) {
+            table[index] = newEntry;
+            modCount++;
+            count++;
+        }
         return b;
     }
 
