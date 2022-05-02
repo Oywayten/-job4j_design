@@ -16,7 +16,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if (count == capacity * LOAD_FACTOR) {
+        if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
         int hsh = hash(key.hashCode());
@@ -24,16 +24,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         MapEntry<K, V> isEntry = table[index];
         MapEntry<K, V> newEntry = new MapEntry<>(key, value);
         boolean b = isEntry == null;
-        if (!b) {
-            if (isEntry.key.equals(key)) {
-                isEntry.value = value;
-                modCount++;
-            }
-        } else {
-            table[index] = newEntry;
-            modCount++;
-            count++;
-        }
+        table[index] = newEntry;
+        modCount++;
+        count++;
         return b;
     }
 
@@ -51,23 +44,24 @@ public class SimpleMap<K, V> implements Map<K, V> {
         table = new MapEntry[capacity];
         for (MapEntry<K, V> oldEntry : oldTable) {
             put(oldEntry.key, oldEntry.value);
+            count--;
         }
     }
 
     @Override
     public V get(K key) {
-        return (indexFor(hash(key.hashCode())) <= capacity
-                || indexFor(hash(key.hashCode())) >= 0)
-                && table[indexFor(hash(key.hashCode()))] != null ? table[indexFor(hash(key.hashCode()))].value : null;
+        int index = indexFor(hash(key.hashCode()));
+        return table[index] != null ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
-        boolean b = (indexFor(hash(key.hashCode())) <= capacity
-                || indexFor(hash(key.hashCode())) >= 0)
-                && table[indexFor(hash(key.hashCode()))] != null;
+        int index = indexFor(hash(key.hashCode()));
+        boolean b = table[index] != null;
         if (b) {
-            table[indexFor(hash(key.hashCode()))] = null;
+            table[index] = null;
+            count--;
+            modCount++;
         }
         return b;
     }
@@ -142,5 +136,4 @@ public class SimpleMap<K, V> implements Map<K, V> {
             return Objects.hash(key, value);
         }
     }
-
 }
