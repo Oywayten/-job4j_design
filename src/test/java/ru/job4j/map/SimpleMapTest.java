@@ -1,6 +1,7 @@
 package ru.job4j.map;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -70,12 +71,36 @@ public class SimpleMapTest {
         SimpleMap<String, Integer> schools = new SimpleMap<>();
         schools.put("Moscow", 5500);
         schools.put("Samara", 50);
+        schools.put("Izhevsk", 9);
+        Iterator<String> iterator = schools.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals("Izhevsk", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("Moscow", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("Samara", iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @Ignore
+    @Test
+    public void whenPut10ElAndExpand() {
+        SimpleMap<String, Integer> schools = new SimpleMap<>();
+        schools.put("Moscow", 5500);
+        schools.put("Samara", 50);
+        schools.put("StPete", 1500);
+        schools.put("Syzran", 25);
+        schools.put("Rostov", 30);
+        schools.put("Omsk", 19);
+        schools.put("Izhevsk", 9);
+        schools.put("EKB", 25);
+        schools.put("Kazan", 190);
+        schools.put("Ufa", 100);
         Iterator<String> iterator = schools.iterator();
         assertTrue(iterator.hasNext());
         assertEquals("Moscow", iterator.next());
         assertTrue(iterator.hasNext());
         assertEquals("Samara", iterator.next());
         assertFalse(iterator.hasNext());
-
     }
 }

@@ -41,11 +41,24 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        capacity <<= 1;
+        int newCapacity = capacity << 1;
         MapEntry<K, V>[] oldTable = table;
-        table = new MapEntry[capacity];
+        table = new MapEntry[newCapacity];
+        int i = 0;
         for (MapEntry<K, V> oldEntry : oldTable) {
+            i++;
+            System.out.println(i);
+            System.out.println("key " + oldEntry.key + " value " + oldEntry.value);
             put(oldEntry.key, oldEntry.value);
+            count--;
+        }
+        Iterator<K> it = iterator();
+        for (; it.hasNext();) {
+            i++;
+            System.out.println(i);
+            K next = it.next();
+            System.out.println("key " + next + " value " + get(next));
+            put(next, get(next));
             count--;
         }
     }
@@ -53,13 +66,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
-        return table[index] != null ? table[index].value : null;
+        return table[index] != null && table[index].key == key ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        boolean b = table[index] != null;
+        boolean b = table[index] != null && table[index].key == key;
         if (b) {
             table[index] = null;
             count--;
@@ -71,7 +84,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public Iterator<K> iterator() {
         return new Iterator<>() {
-            int point = 0;
+            int point;
             final int expectedModCount = modCount;
 
             @Override
@@ -92,10 +105,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                     throw new NoSuchElementException();
                 }
                 while (point < capacity - 1) {
-                    point++;
                     if (table[point] != null) {
                         break;
                     }
+                    point++;
                 }
                 return table[point++].key;
             }
