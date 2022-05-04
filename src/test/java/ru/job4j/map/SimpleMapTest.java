@@ -98,9 +98,11 @@ public class SimpleMapTest {
         schools.put("Ufa", 100);
         Iterator<String> iterator = schools.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals("Moscow", iterator.next());
+        assertEquals("Izhevsk", iterator.next());
         assertTrue(iterator.hasNext());
-        assertEquals("Samara", iterator.next());
-        assertFalse(iterator.hasNext());
+        assertEquals("Kazan", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("Syzran", iterator.next());
+        assertTrue(iterator.hasNext());
     }
 }

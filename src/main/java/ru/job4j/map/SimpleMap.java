@@ -16,7 +16,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if (count >= capacity * LOAD_FACTOR) {
+        if (count == capacity * LOAD_FACTOR) {
             expand();
         }
         int hsh = hash(key.hashCode());
@@ -41,24 +41,16 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        int newCapacity = capacity << 1;
+        capacity <<= 1;
         MapEntry<K, V>[] oldTable = table;
-        table = new MapEntry[newCapacity];
+        table = new MapEntry[capacity];
         int i = 0;
         for (MapEntry<K, V> oldEntry : oldTable) {
+            if (oldEntry == null) {
+                continue;
+            }
             i++;
-            System.out.println(i);
-            System.out.println("key " + oldEntry.key + " value " + oldEntry.value);
             put(oldEntry.key, oldEntry.value);
-            count--;
-        }
-        Iterator<K> it = iterator();
-        for (; it.hasNext();) {
-            i++;
-            System.out.println(i);
-            K next = it.next();
-            System.out.println("key " + next + " value " + get(next));
-            put(next, get(next));
             count--;
         }
     }
