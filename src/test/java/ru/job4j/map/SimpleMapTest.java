@@ -82,7 +82,6 @@ public class SimpleMapTest {
         assertFalse(iterator.hasNext());
     }
 
-    @Ignore
     @Test
     public void whenPut10ElAndExpand() {
         SimpleMap<String, Integer> schools = new SimpleMap<>();
