@@ -12,8 +12,12 @@ public class SimpleTree<E> implements Tree<E> {
 
     @Override
     public boolean add(E parent, E child) {
+        boolean rsl = false;
         Optional<Node<E>> tmp = findBy(parent);
-        return tmp.isPresent() && findBy(child).isEmpty() ? tmp.get().children.add(new Node<>(child)) : false;
+        if (tmp.isPresent() && findBy(child).isEmpty()) {
+            rsl = tmp.get().children.add(new Node<>(child));
+        }
+        return rsl;
     }
 
     private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
@@ -21,19 +25,12 @@ public class SimpleTree<E> implements Tree<E> {
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
-            rsl = data.stream()
-                    .filter(condition)
-                    .findFirst();
-            if (rsl.isPresent()) {
+            Node<E> el = data.poll();
+            if (condition.test(el)) {
+                rsl = Optional.of(el);
                 break;
             }
-            Queue<Node<E>> tmp = new LinkedList<>(data);
-            for (int i = 0; i < data.size(); i++) {
-                data.remove();
-            }
-            for (Node<E> e : tmp) {
-                data.addAll(e.children);
-            }
+            data.addAll(el.children);
         }
         return rsl;
     }
