@@ -58,13 +58,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
-        return table[index] != null && table[index].key == key ? table[index].value : null;
+        return table[index] != null && table[index].key.equals(key) ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        boolean b = table[index] != null && table[index].key == key;
+        boolean b = table[index] != null && table[index].key.equals(key);
         if (b) {
             table[index] = null;
             count--;
@@ -84,23 +84,16 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                int tmp = point;
-                while (tmp < capacity - 1 && table[tmp] == null) {
-                    tmp++;
+                while (point < capacity && table[point] == null) {
+                    point++;
                 }
-                return tmp < capacity && table[tmp] != null;
+                return point < capacity && table[point] != null;
             }
 
             @Override
             public K next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                while (point < capacity - 1) {
-                    if (table[point] != null) {
-                        break;
-                    }
-                    point++;
                 }
                 return table[point++].key;
             }
