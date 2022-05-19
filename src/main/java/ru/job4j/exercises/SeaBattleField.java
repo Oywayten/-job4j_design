@@ -3,15 +3,15 @@ package ru.job4j.exercises;
 import java.util.*;
 
 public class SeaBattleField {
-    static int singleDeck;
-    static int doubleDeck;
-    static int threeDeck;
-    static int fourDeck;
-    HashSet<Cell> cells;
-    boolean isOk = true;
-    boolean isHorizontal = true;
-    LinkedList<Cell> ship = new LinkedList<>();
-    Iterator<Cell> iterator;
+    private int singleDeck;
+    private int doubleDeck;
+    private int threeDeck;
+    private int fourDeck;
+    private HashSet<Cell> cells;
+    private boolean isOk = true;
+    private boolean isHorizontal = true;
+    private LinkedList<Cell> ship = new LinkedList<>();
+    private Iterator<Cell> iterator;
 
     public boolean checkCell(Cell cell) {
         int x = cell.getX();
