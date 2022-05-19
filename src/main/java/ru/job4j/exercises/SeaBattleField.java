@@ -10,8 +10,7 @@ public class SeaBattleField {
     private HashSet<Cell> cells;
     private boolean isOk = true;
     private boolean isHorizontal = true;
-    private LinkedList<Cell> ship = new LinkedList<>();
-    private Iterator<Cell> iterator;
+    private final LinkedList<Cell> ship = new LinkedList<>();
 
     public boolean checkCell(Cell cell) {
         int x = cell.getX();
@@ -47,7 +46,7 @@ public class SeaBattleField {
     public boolean checkShips(LinkedHashSet<Cell> cls) {
         cells = cls;
         while (!cells.isEmpty() && isOk) {
-            iterator = cells.iterator();
+            Iterator<Cell> iterator = cells.iterator();
             Cell c = iterator.next();
             ship.add(c);
             iterator.remove();
