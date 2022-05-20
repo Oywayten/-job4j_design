@@ -71,10 +71,18 @@ public class SeaBattleField {
                 break;
             }
             switch (ship.size()) {
-                case 1 -> singleDeck++;
-                case 2 -> doubleDeck++;
-                case 3 -> threeDeck++;
-                default -> fourDeck++;
+                case 1:
+                    singleDeck++;
+                    break;
+                case 2:
+                    doubleDeck++;
+                    break;
+                case 3:
+                    threeDeck++;
+                    break;
+                default:
+                    fourDeck++;
+                    break;
             }
         }
         if (isOk && (singleDeck > 4 || doubleDeck > 3 || threeDeck > 2 || fourDeck > 1)) {
