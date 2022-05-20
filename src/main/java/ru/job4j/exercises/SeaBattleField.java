@@ -74,11 +74,7 @@ public class SeaBattleField {
                 case 1 -> singleDeck++;
                 case 2 -> doubleDeck++;
                 case 3 -> threeDeck++;
-                case 4 -> fourDeck++;
-                default -> {
-                    System.out.println("Корабли размещены не правильно - число ячеек");
-                    isOk = false;
-                }
+                default -> fourDeck++;
             }
         }
         if (isOk && (singleDeck > 4 || doubleDeck > 3 || threeDeck > 2 || fourDeck > 1)) {
