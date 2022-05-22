@@ -18,8 +18,7 @@ public class Config {
     public void load() {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             Map<String, String> tmp = br.lines()
-                    .filter(s -> !s.isEmpty())
-                    .filter(s -> !s.contains("#"))
+                    .filter(s -> !s.isEmpty() && !s.startsWith("#"))
                     .map(s -> s.split("=", 2))
                     .filter(strings -> {
                         if (strings.length < 2 || strings[0].isEmpty() || strings[1].isEmpty()) {
