@@ -10,12 +10,23 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class Search {
     public static void main(String[] args) throws IOException {
+        checkArgs(args);
         Path start = Paths.get(".\\");
-        System.out.println(Files.isDirectory(start));
         search(start, p -> p.toFile().getName().endsWith(".js")).forEach(System.out::println);
     }
 
+    public static void checkArgs(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
+        } else if (args.length != 2) {
+            throw new IllegalArgumentException("Invalid number of arguments. Use the path and file extension");
+        } else if (!Files.isDirectory(Paths.get(args[0]))) {
+            throw new IllegalArgumentException("Invalid Path. Specify the correct path to the search folder");
+        }
+    }
+
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
+
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
