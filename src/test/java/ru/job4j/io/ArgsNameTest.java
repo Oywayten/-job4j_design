@@ -19,6 +19,31 @@ public class ArgsNameTest {
         assertThat(jvm.get("Xmx"), is("512"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void whenWithoutKey() {
+        ArgsName jvm = ArgsName.of(new String[]{"-=UTF-8", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenWithoutKeyAndValue() {
+        ArgsName jvm = ArgsName.of(new String[]{"-=", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenWithoutMinus() {
+        ArgsName jvm = ArgsName.of(new String[]{"ddd=UTF-8", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenWithoutEqual() {
+        ArgsName jvm = ArgsName.of(new String[]{"-ddd:UTF-8", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenEmptyArray() {
+        ArgsName jvm = ArgsName.of(new String[]{,});
+    }
+
     @Test
     public void whenMultipleEqualsSymbol() {
         ArgsName jvm = ArgsName.of(new String[]{"-request=?msg=Exit="});

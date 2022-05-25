@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class ArgsName {
 
@@ -15,18 +16,24 @@ public class ArgsName {
         return values.get(key);
     }
 
-    private void parse(String[] args) {
+    private void checkString(String s) throws IllegalArgumentException {
+        if (!Pattern.matches("[-]\\S+[=]\\S+", s)) {
+            throw new IllegalArgumentException("Введите верное значение");
+        }
+    }
+
+    private void parse(String[] args) throws IllegalArgumentException {
         Arrays.stream(args)
+                .peek(this::checkString)
                 .map(s -> s.split("=", 2))
-                .peek(strings -> {
-                    if (strings[1].isEmpty()) {
-                        throw new IllegalArgumentException("Введите верное значение");
-                    }
-                    strings[0] = strings[0].split("-", 2)[1];
-                }).forEach(s -> values.putIfAbsent(s[0], s[1]));
+                .peek(strings -> strings[0] = strings[0].split("-", 2)[1])
+                .forEach(s -> values.putIfAbsent(s[0], s[1]));
     }
 
     public static ArgsName of(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Введите корректные аргументы");
+        }
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
