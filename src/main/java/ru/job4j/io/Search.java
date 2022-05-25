@@ -11,8 +11,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class Search {
     public static void main(String[] args) throws IOException {
         checkArgs(args);
-        Path start = Paths.get(".\\");
-        search(start, p -> p.toFile().getName().endsWith(".js")).forEach(System.out::println);
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 
     public static void checkArgs(String[] args) {
@@ -21,6 +21,10 @@ public class Search {
         }
         if (!Files.isDirectory(Paths.get(args[0]))) {
             throw new IllegalArgumentException("Invalid Path. Specify the correct path to the search folder");
+        }
+        if (!args[1].startsWith(".")) {
+            System.out.println(args[1]);
+            throw new IllegalArgumentException("Check the second parameter - it must start with the character \".\"");
         }
     }
 
