@@ -31,7 +31,7 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
-        if (args.length == 0) {
+        if (args[0] == null) {
             throw new IllegalArgumentException("Введите корректные аргументы");
         }
         ArgsName names = new ArgsName();
