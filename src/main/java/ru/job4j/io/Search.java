@@ -16,11 +16,10 @@ public class Search {
     }
 
     public static void checkArgs(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
-        } else if (args.length != 2) {
+        if (args.length != 2) {
             throw new IllegalArgumentException("Invalid number of arguments. Use the path and file extension");
-        } else if (!Files.isDirectory(Paths.get(args[0]))) {
+        }
+        if (!Files.isDirectory(Paths.get(args[0]))) {
             throw new IllegalArgumentException("Invalid Path. Specify the correct path to the search folder");
         }
     }
