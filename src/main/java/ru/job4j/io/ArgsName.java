@@ -17,7 +17,7 @@ public class ArgsName {
     }
 
     private void checkString(String s) throws IllegalArgumentException {
-        if (!Pattern.matches("[-]\\S+[=]\\S+", s)) {
+        if (!Pattern.matches("[-]\\S+[=](\\S+[ ]\\S+|\\S+)", s)) {
             throw new IllegalArgumentException("Введите верное значение");
         }
     }
@@ -40,7 +40,7 @@ public class ArgsName {
     }
 
     public static void main(String[] args) {
-        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512", "-encoding=UTF-8"});
+        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512 gdfgv", "-encoding=UTF-8"});
         System.out.println(jvm.get("Xmx"));
 
         ArgsName zip = ArgsName.of(new String[]{"-out=project.zip", "-encoding=UTF-8"});
