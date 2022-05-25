@@ -41,7 +41,7 @@ public class ArgsNameTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenEmptyArray() {
-        ArgsName jvm = ArgsName.of(new String[2]);
+        ArgsName jvm = ArgsName.of(new String[0]);
     }
 
     @Test
