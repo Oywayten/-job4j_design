@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ArgsName {
-
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
@@ -17,7 +16,7 @@ public class ArgsName {
     }
 
     private void checkString(String s) throws IllegalArgumentException {
-        if (!Pattern.matches("[-]\\S+[=](\\S+[ ]\\S+|\\S+)", s)) {
+        if (!Pattern.matches("-\\S+=(\\S+ \\S+|\\S+)", s)) {
             throw new IllegalArgumentException("Введите верное значение");
         }
     }

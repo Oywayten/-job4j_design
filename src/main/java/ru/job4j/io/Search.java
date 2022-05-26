@@ -2,12 +2,15 @@ package ru.job4j.io;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * Класс обходит дерево каталогов указанной категории и ищет файлы с указанным расширением.
+ */
 public class Search {
     public static void main(String[] args) throws IOException {
         checkArgs(args);
@@ -17,9 +20,12 @@ public class Search {
 
     public static void checkArgs(String[] args) {
         if (args.length != 2) {
+            System.out.println(args.length);
+            Arrays.stream(args).forEach(System.out::println);
             throw new IllegalArgumentException("Invalid number of arguments. Use the path and file extension");
         }
         if (!Files.isDirectory(Paths.get(args[0]))) {
+            System.out.println(args[0]);
             throw new IllegalArgumentException("Invalid Path. Specify the correct path to the search folder");
         }
         if (!args[1].startsWith(".")) {
