@@ -41,8 +41,8 @@ public class ConsoleChat {
                             str = reader.readLine();
                             log.add(str);
                             System.out.println(str);
-                            System.out.println(str.equalsIgnoreCase(OUT));
-                            if (str.equalsIgnoreCase(OUT)) {
+                            System.out.println(OUT.equalsIgnoreCase(str));
+                            if (OUT.equalsIgnoreCase(str)) {
                                 break;
                             }
                         }
