@@ -33,13 +33,15 @@ public class ConsoleChat {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
              PrintWriter pw = new PrintWriter(new FileWriter(path, StandardCharsets.UTF_8))) {
             str = reader.readLine();
-            pw.println(str);
+//            pw.println(str);
+            log.add(str);
             while (!str.equalsIgnoreCase(OUT)) {
                 log.add(str);
                 switch (str) {
                     case STOP:
-                        while (!str.equalsIgnoreCase(CONTINUE) && !str.equalsIgnoreCase(OUT)) {
+                        while (!CONTINUE.equalsIgnoreCase(str) && !OUT.equalsIgnoreCase(str)) {
                             str = reader.readLine();
+                            log.add(str);
                             System.out.println(str);
                             System.out.println(str.equalsIgnoreCase(OUT));
                             if (str.equalsIgnoreCase(OUT)) {
@@ -55,8 +57,9 @@ public class ConsoleChat {
                         pw.println(str);
                 }
                 str = reader.readLine();
-                pw.println(str);
+                log.add(str);
             }
+            saveLog(log);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,6 +76,10 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path, StandardCharsets.UTF_8))) {
+            log.forEach(pw::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
