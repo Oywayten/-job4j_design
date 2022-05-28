@@ -30,10 +30,8 @@ public class ConsoleChat {
         Random random = new Random();
         String str;
         List<String> log = new LinkedList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-             PrintWriter pw = new PrintWriter(new FileWriter(path, StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
             str = reader.readLine();
-//            pw.println(str);
             log.add(str);
             while (!str.equalsIgnoreCase(OUT)) {
                 log.add(str);
@@ -54,7 +52,6 @@ public class ConsoleChat {
                         int i = random.nextInt(answers.size());
                         str = answers.get(i);
                         System.out.println(str);
-                        pw.println(str);
                 }
                 str = reader.readLine();
                 log.add(str);
