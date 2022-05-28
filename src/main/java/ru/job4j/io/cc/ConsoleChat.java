@@ -37,12 +37,17 @@ public class ConsoleChat {
             while (!str.equalsIgnoreCase(OUT)) {
                 log.add(str);
                 switch (str) {
+                    case STOP:
+                        while (!str.equalsIgnoreCase(CONTINUE) && !str.equalsIgnoreCase(OUT)) {
+                            str = reader.readLine();
+                            System.out.println(str);
+                            System.out.println(str.equalsIgnoreCase(OUT));
+                            if (str.equalsIgnoreCase(OUT)) {
+                                break;
+                            }
+                        }
                     case OUT:
                         break;
-                    case STOP:
-                        while (!str.equalsIgnoreCase(CONTINUE)) {
-                            str = reader.readLine();
-                        }
                     default:
                         int i = random.nextInt(answers.size());
                         str = answers.get(i);
