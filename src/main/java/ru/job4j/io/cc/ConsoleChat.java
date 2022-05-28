@@ -21,40 +21,40 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("src/main/java/ru/job4j/io/cc/dialog.log", "src/main/java/ru/job4j/io/cc/answers.txt");
+        ConsoleChat cc = new ConsoleChat(
+                "src/main/java/ru/job4j/io/cc/dialog.log", "src/main/java/ru/job4j/io/cc/answers.txt");
         System.out.println("Привет! Напиши мне что нибудь!");
         cc.run();
     }
 
     public void run() {
         Random random = new Random();
-        String str;
+        String str = null;
         List<String> log = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-            str = reader.readLine();
-            log.add(str);
-            while (!str.equalsIgnoreCase(OUT)) {
+            while (!OUT.equalsIgnoreCase(str)) {
+                str = reader.readLine();
                 log.add(str);
                 switch (str) {
                     case STOP:
+                        reader.skip(1);
                         while (!CONTINUE.equalsIgnoreCase(str) && !OUT.equalsIgnoreCase(str)) {
                             str = reader.readLine();
                             log.add(str);
-                            System.out.println(str);
-                            System.out.println(OUT.equalsIgnoreCase(str));
                             if (OUT.equalsIgnoreCase(str)) {
                                 break;
                             }
                         }
+                        break;
                     case OUT:
                         break;
                     default:
                         int i = random.nextInt(answers.size());
                         str = answers.get(i);
+                        log.add(str);
                         System.out.println(str);
                 }
-                str = reader.readLine();
-                log.add(str);
+
             }
             saveLog(log);
         } catch (IOException e) {
