@@ -23,7 +23,6 @@ public class ConsoleChat {
     public static void main(String[] args) {
         ConsoleChat cc = new ConsoleChat(
                 "src/main/java/ru/job4j/io/cc/dialog.log", "src/main/java/ru/job4j/io/cc/answers.txt");
-        System.out.println("Привет! Напиши мне что нибудь!");
         cc.run();
     }
 
@@ -37,7 +36,6 @@ public class ConsoleChat {
                 log.add(str);
                 switch (str) {
                     case STOP:
-                        reader.skip(1);
                         while (!CONTINUE.equalsIgnoreCase(str) && !OUT.equalsIgnoreCase(str)) {
                             str = reader.readLine();
                             log.add(str);
