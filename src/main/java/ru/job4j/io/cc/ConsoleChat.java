@@ -31,17 +31,19 @@ public class ConsoleChat {
         String str = null;
         List<String> log = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+            str = reader.readLine();
+            log.add(str);
             while (!OUT.equalsIgnoreCase(str)) {
-                str = reader.readLine();
-                log.add(str);
                 switch (str) {
                     case STOP:
-                        while (!CONTINUE.equalsIgnoreCase(str) && !OUT.equalsIgnoreCase(str)) {
-                            str = reader.readLine();
-                            log.add(str);
+                        str = reader.readLine();
+                        log.add(str);
+                        while (!CONTINUE.equalsIgnoreCase(str)) {
                             if (OUT.equalsIgnoreCase(str)) {
                                 break;
                             }
+                            str = reader.readLine();
+                            log.add(str);
                         }
                         break;
                     case OUT:
@@ -51,8 +53,10 @@ public class ConsoleChat {
                         str = answers.get(i);
                         log.add(str);
                         System.out.println(str);
+                        str = reader.readLine();
+                        log.add(str);
+                        break;
                 }
-
             }
             saveLog(log);
         } catch (IOException e) {
