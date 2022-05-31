@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Класс читает данные из CSV файла и выводит их. В качестве входных данных задается путь к файлу path,
@@ -19,6 +22,19 @@ import java.util.Scanner;
  * В качестве разделителя данных выступает ;
  */
 public class CSVReader {
+    public static void checkArgs(String source, String delimiter, String target, String filter) {
+        if (null == source || null == delimiter || null == target || null == filter) {
+            throw new IllegalArgumentException("Set the right arguments");
+        }
+        if (!Files.exists(Paths.get(source)) || !Files.exists(Paths.get(target))) {
+            throw new IllegalArgumentException(
+                    "Invalid Path. Specify the correct path to the source and target folder");
+        }
+        if (!Pattern.matches("[,;\\t]", delimiter)) {
+            throw new IllegalArgumentException("Please enter a valid delimiter");
+        }
+    }
+
     /**
      * Метод обрабатывает переданные параметры и формирует итоговый файл
      *
@@ -30,6 +46,7 @@ public class CSVReader {
         String delimiter = name.get("delimiter");
         String rsl = "";
         List<String> filter = List.of(name.get("filter").split(","));
+        checkArgs(name.get("path"), delimiter, target, name.get("filter"));
         try (Scanner sc = new Scanner(source).useDelimiter(delimiter)) {
             while (sc.hasNext()) {
                 List<String> line = List.of(sc.nextLine().split(delimiter));
