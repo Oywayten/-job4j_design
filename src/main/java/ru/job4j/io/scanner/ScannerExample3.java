@@ -12,7 +12,7 @@ public class ScannerExample3 {
         String data = "A 1B FF 110";
         File file = null;
         try {
-            file = File.createTempFile("data", null);
+            file = File.createTempFile("data", ".csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
