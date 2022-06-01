@@ -22,11 +22,13 @@ import java.util.regex.Pattern;
  * В качестве разделителя данных выступает ;
  */
 public class CSVReader {
+    public static void main(String[] args) {
+        ArgsName argsName = ArgsName.of(args);
+        handle(argsName);
+    }
+
     public static void checkArgs(String source, String delimiter, String target, String filter) {
-        if (null == source || null == delimiter || null == target || null == filter) {
-            throw new IllegalArgumentException("Set the right arguments");
-        }
-        if (!Files.exists(Paths.get(source)) || !Files.exists(Paths.get(target))) {
+        if (!Files.exists(Paths.get(source)) || !"stdout".equals(target) && !Files.exists(Paths.get(target))) {
             throw new IllegalArgumentException(
                     "Invalid Path. Specify the correct path to the source and target folder");
         }
@@ -65,15 +67,16 @@ public class CSVReader {
      * @param rsl    строка для вывода
      */
     private static void output(String target, String rsl) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(target))) {
-            if ("stdout".equals(target)) {
-                System.out.println(rsl);
-            } else {
+        if ("stdout".equals(target)) {
+            System.out.println(rsl);
+        } else {
+            try (PrintWriter pw = new PrintWriter(new FileWriter(target))) {
                 pw.print(rsl);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
     /**
