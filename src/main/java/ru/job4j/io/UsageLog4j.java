@@ -17,10 +17,11 @@ public class UsageLog4j {
         int daysOfLearning = 135;
         float tasksPerDay = 2.41f;
         LOG.trace("trace message");
-        LOG.debug("\nUser info name : {}, age : {} , he is a teacher on the {} course and it is {}.\n"
-                        .concat("My learning progress : Начало обучения {}, "
-                                .concat("последняя активность : {} , дней обучения {}, задач в день {}.")),
-                name, age, courseName, isTeacher, startDate, lastActivity, daysOfLearning, tasksPerDay);
+        LOG.debug("User info name : {}, age : {}", name, age);
+        LOG.debug("he is a teacher on the {} course and it is {}.", courseName, isTeacher);
+        LOG.debug("My learning progress :");
+        LOG.debug("Start date {}, last activity : {}", startDate, lastActivity);
+        LOG.debug("Days of training {}, tasks per day {}", daysOfLearning, tasksPerDay);
         LOG.info("info message");
         LOG.warn("warn message");
         LOG.error("error message");
