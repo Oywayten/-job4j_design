@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<truck isTipper="false" loadCapacity="3" model="Gazel">
+    <contact phone="=7911"/>
+    <passengers>
+        <passenger>Arnold</passenger>
+        <passenger>Forbidden</passenger>
+    </passengers>
+</truck>
