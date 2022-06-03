@@ -1,4 +1,4 @@
-package ru.job4j.serialization.json;
+package ru.job4j.io.serialization.json;
 
 import java.util.Arrays;
 
@@ -8,7 +8,7 @@ public class Person {
     private final Contact contact;
     private final String[] statuses;
 
-    public Person(boolean sex, int age, ru.job4j.serialization.json.Contact contact, String[] statuses) {
+    public Person(boolean sex, int age, Contact contact, String[] statuses) {
         this.sex = sex;
         this.age = age;
         this.contact = contact;

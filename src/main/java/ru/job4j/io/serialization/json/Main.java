@@ -1,4 +1,4 @@
-package ru.job4j.serialization.json;
+package ru.job4j.io.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,13 +9,12 @@ public class Main {
                 new Contact("+79110010011"), new String[]{"Viktor", "Maria"});
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(truck));
-/*
         final String trackJson = "{\"isTipper\":false,"
                 + "\"loadCapacity\":3,"
                 + "\"model\":\"Gazel\","
                 + "\"contact\":{\"phone\":\"+79134305983\"},"
                 + "\"passengers\":[\"Arnold\",\"forbidden\"]}";
         final Truck trackMod = gson.fromJson(trackJson, Truck.class);
-        System.out.println(trackMod);*/
+        System.out.println(trackMod);
     }
 }
