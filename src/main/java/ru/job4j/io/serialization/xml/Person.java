@@ -1,15 +1,26 @@
 package ru.job4j.io.serialization.xml;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.*;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 
+@XmlRootElement(name = "car")
+@XmlAccessorType
 public class Person {
 
+    @XmlAttribute
     private boolean sex;
-
+    @XmlAttribute
     private int age;
-
+    @XmlElement
     private Contact contact;
 
+    @XmlElementWrapper(name = "statuses")
+    @XmlElement(name = "status")
     private String[] statuses;
 
     public Person() {
@@ -22,6 +33,24 @@ public class Person {
         this.statuses = statuses;
     }
 
+    public static void main(String[] args) throws Exception {
+        final Person person = new Person(false, 30, new Contact("11-111"), "Worker", "Married");
+        JAXBContext context = JAXBContext.newInstance(Person.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        String xml;
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(person, writer);
+            xml = writer.getBuffer().toString();
+            System.out.println(xml);
+        }
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(xml)) {
+            Person result = (Person) unmarshaller.unmarshal(reader);
+            System.out.println(result);
+        }
+    }
+
     @Override
     public String toString() {
         return "Person{"
@@ -31,5 +60,4 @@ public class Person {
                 + ", statuses=" + Arrays.toString(statuses)
                 + '}';
     }
-
 }
