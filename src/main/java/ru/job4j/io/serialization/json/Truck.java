@@ -17,6 +17,26 @@ public class Truck {
         this.passengers = passengers;
     }
 
+    public boolean isTipper() {
+        return isTipper;
+    }
+
+    public int getLoadCapacity() {
+        return loadCapacity;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getPassengers() {
+        return passengers;
+    }
+
     @Override
     public String toString() {
         return "Truck{" + "isTipper=" + isTipper + ", loadCapacity=" + loadCapacity + ", model='" + model
