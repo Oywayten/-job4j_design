@@ -5,7 +5,6 @@ import java.util.Formatter;
 
 public class FormatDemo {
     public static void main(String[] args) {
-
         Formatter formatter = new Formatter();
         formatter.format("It's very easy to format with %s %d %f", "Java", 10, 98.86);
         System.out.println(formatter);
@@ -24,5 +23,8 @@ public class FormatDemo {
         formatter.format("%tb", calendar);
         System.out.println(formatter);
         formatter.close();
+        int i = -222222;
+        String s = String.format("Integer %n%, 07d and %n integer %<,d and %n integer %1$,d", i);
+        System.out.println(s);
     }
 }
