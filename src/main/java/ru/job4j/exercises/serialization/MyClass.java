@@ -6,6 +6,7 @@ public class MyClass implements Serializable {
     String s;
     int i;
     transient double d;
+    static final long serialVersionUID = 11;
 
     public MyClass(String s, int i, double d) {
         this.s = s;
