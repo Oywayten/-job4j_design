@@ -10,7 +10,7 @@ public class FileWalkDemo {
         Path source = Paths.get("src/main/java/ru/job4j/exercises/serialization");
         Path target = Paths.get("src/main/java/ru/job4j/exercises/temp");
         try {
-            Files.walk(source).forEach(p -> {
+            Files.find(source, 3, (path, attributes) -> path.endsWith(".txt")).forEach(p -> {
                 try {
                     Path q = target.resolve(source.relativize(p));
                     if (Files.isDirectory(p) && !Files.exists(p)) {
