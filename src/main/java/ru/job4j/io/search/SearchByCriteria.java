@@ -60,10 +60,8 @@ public class SearchByCriteria {
                 pr = p -> p.getFileName().toString().equals(condition);
                 break;
             case "mask":
-                pr = p -> Pattern.matches(condition, p.toFile().getName());
-                break;
             default:
-                pr = p -> Pattern.matches(condition, p.toAbsolutePath().toString());
+                pr = p -> Pattern.matches(condition, p.toFile().getName());
                 break;
         }
         return pr;
