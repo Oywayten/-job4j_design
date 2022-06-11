@@ -57,12 +57,10 @@ public class SearchByCriteria {
         Predicate<Path> pr;
         switch (searchType) {
             case "name":
-
                 pr = p -> p.getFileName().toString().equals(condition);
                 break;
             case "mask":
-                pr = p -> p.toFile().getName().endsWith(condition);
-                System.out.println(condition);
+                pr = p -> Pattern.matches(condition, p.toFile().getName());
                 break;
             default:
                 pr = p -> Pattern.matches(condition, p.toAbsolutePath().toString());
