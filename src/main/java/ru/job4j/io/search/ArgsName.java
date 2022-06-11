@@ -1,4 +1,4 @@
-package ru.job4j.io;
+package ru.job4j.io.search;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class ArgsName {
      * @throws IllegalArgumentException если введено неверное значение
      */
     private void checkString(String s) throws IllegalArgumentException {
-        if (!Pattern.matches("-\\S+=(\\S+ \\S+|\\S+)", s)) {
+        if (!Pattern.matches("-\\S+=(\\S+ *\\S*)", s)) {
             throw new IllegalArgumentException("Введите верное значение");
         }
     }

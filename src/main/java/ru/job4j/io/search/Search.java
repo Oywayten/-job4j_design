@@ -1,4 +1,4 @@
-package ru.job4j.io;
+package ru.job4j.io.search;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,6 +12,7 @@ import java.util.function.Predicate;
  * Класс обходит дерево каталогов указанной категории и ищет файлы по определенному предикату (по указанному расширению)
  */
 public class Search {
+
     public static void main(String[] args) throws IOException {
         checkArgs(args);
         Path start = Paths.get(args[0]);
@@ -52,6 +53,7 @@ public class Search {
      * @throws IOException исключение обхода каталогов
      */
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
+        System.out.println(root.toAbsolutePath());
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
@@ -75,7 +77,10 @@ class SearchFiles extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+        System.out.println(file);
+        System.out.println(condition.test(file));
         if (condition.test(file)) {
+            System.out.println(file.toAbsolutePath());
             list.add(file);
         }
         return super.visitFile(file, attrs);

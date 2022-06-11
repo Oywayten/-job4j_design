@@ -2,7 +2,19 @@ package ru.job4j.io;
 
 import java.io.*;
 
+/**
+ * @author Oywayten
+ * @version 1.01 2022-06-09
+ * Класс для анализа доступности сервера
+ */
 public class Analizy {
+
+    /**
+     * Метод ищет диапазоны, когда не работал сервер
+     *
+     * @param source путь к файлу лога
+     * @param target путь к файлу результата анализа
+     */
     public void unavailable(String source, String target) {
         try (BufferedReader in = new BufferedReader(new FileReader(source));
              PrintWriter out = new PrintWriter(new FileOutputStream(target))) {

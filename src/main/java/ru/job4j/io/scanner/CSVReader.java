@@ -1,6 +1,6 @@
 package ru.job4j.io.scanner;
 
-import ru.job4j.io.ArgsName;
+import ru.job4j.io.search.ArgsName;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,12 +22,13 @@ import java.util.regex.Pattern;
  * В качестве разделителя данных выступает ;
  */
 public class CSVReader {
+
     public static void main(String[] args) {
         ArgsName argsName = ArgsName.of(args);
         handle(argsName);
     }
 
-    public static void checkArgs(String source, String delimiter, String target, String filter) {
+    public static void checkArgs(String source, String delimiter, String target) {
         if (!Files.exists(Paths.get(source)) || !"stdout".equals(target) && !Files.exists(Paths.get(target))) {
             throw new IllegalArgumentException(
                     "Invalid Path. Specify the correct path to the source and target folder");
@@ -48,7 +49,7 @@ public class CSVReader {
         String delimiter = name.get("delimiter");
         String rsl = "";
         List<String> filter = List.of(name.get("filter").split(","));
-        checkArgs(name.get("path"), delimiter, target, name.get("filter"));
+        checkArgs(name.get("path"), delimiter, target);
         try (Scanner sc = new Scanner(source).useDelimiter(delimiter)) {
             while (sc.hasNext()) {
                 List<String> line = List.of(sc.nextLine().split(delimiter));

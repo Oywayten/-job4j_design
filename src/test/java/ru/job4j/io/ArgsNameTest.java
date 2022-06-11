@@ -1,9 +1,10 @@
 package ru.job4j.io;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import org.junit.Test;
+import ru.job4j.io.search.ArgsName;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ArgsNameTest {
 

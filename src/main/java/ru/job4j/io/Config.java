@@ -3,9 +3,17 @@ package ru.job4j.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+/**
+ * @author Oywayten
+ * @version 1.01 2022-06-09
+ * Класс читает из файла параметры конфигурации, сохраняет ключи и значения параметров в словарь,
+ * возвращает значение по ключу
+ */
 public class Config {
 
     private final String path;
@@ -15,6 +23,10 @@ public class Config {
         this.path = path;
     }
 
+    /**
+     * Метод считывает все ключи в карту values.
+     * Пропускает пустые строки и комментарии.
+     */
     public void load() {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             Map<String, String> tmp = br.lines()
@@ -33,6 +45,12 @@ public class Config {
         }
     }
 
+    /**
+     * Возвращает значение ключа key
+     *
+     * @param key ключ для поиска значения
+     * @return значение для возврата
+     */
     public String value(String key) {
         return values.get(key);
     }
@@ -51,5 +69,4 @@ public class Config {
     public static void main(String[] args) {
         System.out.println(new Config("app.properties"));
     }
-
 }
