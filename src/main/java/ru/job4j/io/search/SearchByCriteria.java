@@ -16,17 +16,17 @@ import java.util.regex.Pattern;
  * @author Oywayten
  * @version 1.01
  * @since 2022-06-11
- * <p></p>
+ * <br/>
  * Класс ищет файлы по условию в заданном каталоге и подкаталогах.
- * Имя файла может задаваться, целиком, по маске, по регулярному выражению.
+ * Имя файла может задаваться: целиком, по маске, по регулярному выражению.
  * Результаты поиска записываются в файл.
- * Запуск программы: java -jar find.jar -d=c:/ -n=*.?xt -t=mask -o=log.txt
- * Ключи для запуска
- * -d - директория, в которой начинать поиск.
- * -n - имя файла, маска, либо регулярное выражение.
- * -t - тип поиска: mask искать по маске, name по полному совпадение имени, regex по регулярному выражению.
- * -o - результат записать в файл.
- * Ключи валидируются.
+ *<br/> Запуск программы: java -jar find.jar -d=c:/ -n=*.?xt -t=mask -o=log.txt
+ *<br/> Ключи для запуска
+ *<br/> -d - директория, в которой начинать поиск.
+ *<br/> -n - имя файла, маска, либо регулярное выражение.
+ *<br/> -t - тип поиска: mask искать по маске, name по полному совпадение имени, regex по регулярному выражению.
+ *<br/> -o - результат записать в файл.
+ *<br/> Ключи валидируются.
  */
 public class SearchByCriteria {
     ArrayList<String> list;
@@ -56,7 +56,6 @@ public class SearchByCriteria {
     /**
      * Метод возвращает предикат в зависимости от указанного типа поиска.
      * Если указан поиск по маске, то приводит маску к regex.
-     *
      * @param condition  указанное условие поиска
      * @param searchType тип поиска
      * @return возвращает предикат для фильтрации файлов при обходе дерева каталогов
@@ -68,7 +67,7 @@ public class SearchByCriteria {
                 pr = p -> p.getFileName().toString().equals(condition);
                 break;
             case "mask":
-                String s = condition.replace("*", ".*").replace("?", ".");
+                String s = condition.replace(".", "[.]").replace("*", ".*").replace("?", ".");
                 pr = p -> Pattern.matches(s, p.getFileName().toString());
                 break;
             default:
@@ -102,18 +101,15 @@ public class SearchByCriteria {
     /**
      * Метод ищет файлы по условию,
      * а потом возвращает список с подходящими файлами
-     *
      * @param args параметры для работы метода:
-     *             * args[0] - директория, в которой начинать поиск.
-     *             * args[1] - имя файла, маска, либо регулярное выражение.
-     *             * args[2] - тип поиска: mask искать по маске, name по полному совпадение имени, regex по регулярному выражению.
+     *             <br/>args[0] - директория, в которой начинать поиск.
+     *             <br/>args[1] - имя файла, маска, либо регулярное выражение.
+     *             <br/>args[2] - тип поиска: mask искать по маске, name по полному совпадение имени, regex по регулярному выражению.
      * @return возвращает список файлов
      * @throws IOException исключение обхода каталогов
      */
     public List<File> searchFiles(String[] args) throws IOException {
-        System.out.println("Args");
         return Search
-//                .search(Paths.get(args[0]), p -> !p.toFile().getName().endsWith(args[1]))
                 .search(Paths.get(args[0]), condition(args[1], args[2]))
                 .stream()
                 .map(Path::toFile)
