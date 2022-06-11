@@ -53,6 +53,14 @@ public class SearchByCriteria {
         }
     }
 
+    /**
+     * Метод возвращает предикат в зависимости от указанного типа поиска.
+     * Если указан поиск по маске, то приводит маску к regex.
+     *
+     * @param condition  указанное условие поиска
+     * @param searchType тип поиска
+     * @return возвращает предикат для фильтрации файлов при обходе дерева каталогов
+     */
     public static Predicate<Path> condition(String condition, String searchType) {
         Predicate<Path> pr;
         switch (searchType) {
@@ -60,6 +68,9 @@ public class SearchByCriteria {
                 pr = p -> p.getFileName().toString().equals(condition);
                 break;
             case "mask":
+                String s = condition.replace("*", ".*").replace("?", ".");
+                pr = p -> Pattern.matches(s, p.getFileName().toString());
+                break;
             default:
                 pr = p -> Pattern.matches(condition, p.toFile().getName());
                 break;
@@ -70,7 +81,6 @@ public class SearchByCriteria {
     /**
      * Метод сохраняет переданные в массиве аргументы
      * в список list и проверяет их корректность.
-     *
      * @param args переданный массив аргументов
      */
     public void checkArgs(String[] args) {
