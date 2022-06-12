@@ -6,5 +6,5 @@ create table pm(
 create table project(
     id serial primary key,
     fname varchar(255),
-    pm_id varchar(255) references pm(id)
+    pm_id int references pm(id)
 );
