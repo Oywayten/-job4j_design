@@ -6,10 +6,10 @@ create table position_(
 create table employees(
     id serial primary key,
     name_ varchar(255),
-    position_id int references position(id)
+    position_id int references position_(id)
 );
 
-insert into position(name_) values ('programmer');
+insert into position_(name_) values ('programmer');
 insert into employees(name_, position_id) values ('Ivan', 1);
 
 select * from employees;
