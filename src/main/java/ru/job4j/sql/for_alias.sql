@@ -19,6 +19,20 @@ insert into racer(fname, id_car) values ('jhon', 1);
 insert into racer(fname, id_car) values ('tomyam', 2);
 insert into racer(fname, id_car) values ('ivan', 3);
 
---без as тоже отлично работает и тут, и в примерах в уроке
+--проверяем гараж
+select * from car;
+
+--проверяем личный состав
+select * from racer;
+
+--смотрим кто на чем
 select r.fname Имя, c.model as Модель, c.color Цвет, c.max_speed
 from racer r join car c on r.id_car = c.id;
+
+--находим победителя по жизни
+select r.fname as Name, c.max_speed best_speed
+from racer r join car c on r.id_car = c.id and c.max_speed > 200;
+
+-- join-им всех на заезд на самой быстрой тачке
+select r.fname as Name, c.model best_car, c.max_speed
+from racer r join car c on c.max_speed > 300;
