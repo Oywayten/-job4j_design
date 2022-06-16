@@ -25,14 +25,14 @@ select * from car;
 --проверяем личный состав
 select * from racer;
 
---смотрим кто на чем
+--join-им и смотрим кто на чем
 select r.fname Имя, c.model as Модель, c.color Цвет, c.max_speed
 from racer r join car c on r.id_car = c.id;
 
---находим победителя по жизни
+--join-им и выводим тех, у кого скорость больше 200
 select r.fname as Name, c.max_speed best_speed
-from racer r join car c on r.id_car = c.id and c.max_speed > 200;
+from racer r join car c on r.id_car = c.id where c.max_speed > 200;
 
--- join-им всех на заезд на самой быстрой тачке
+-- join-им и выводим со скоростью меньше 300
 select r.fname as Name, c.model best_car, c.max_speed
-from racer r join car c on c.max_speed > 300;
+from racer r join car c on r.id_car = c.id where c.max_speed < 300;
