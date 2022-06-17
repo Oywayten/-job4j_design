@@ -64,10 +64,16 @@ left join gear g on c.id_g = g.id;
 --2) Вывести отдельно детали (1 деталь - 1 запрос),
 --которые не используются НИ в одной машине, кузова, двигатели, коробки передач.
 select b.fname not_used from car1 c
-right join body b on c.id_b = b.id where c.id is null ;
+right join body b
+on c.id_b = b.id
+where c.id is null ;
 
 select e.fname not_used from car1 c
-right join engine e on c.id_b = e.id where c.id is null ;
+right join engine e
+on c.id_b = e.id
+where c.id is null ;
 
 select g.fname not_used from car1 c
-right join gear g on c.id_b = g.id where c.id is null ;
+right join gear g
+on c.id_b = g.id
+where c.id is null ;
