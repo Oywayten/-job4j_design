@@ -26,13 +26,60 @@ insert into product (fname, type_id, expired_date, price) values
 select * from type;
 select * from product;
 
-select product.fname from product join type on product.type_id = type.id where type.fname = 'cheese';
-select product.fname from product join type on product.type_id = type.id where product.fname like '%icecream%';
-select product.fname, product.expired_date from product join type on product.type_id = type.id
-where expired_date < current_date order by expired_date;
-select product.fname, product.price from product join type on product.type_id = type.id
-order by product.price desc limit 1;
-select t.fname, count(p.fname) from type t join product p on t.id = p.type_id group by t.fname;
-select product.fname from product join type on product.type_id = type.id where type.fname = 'cheese' or type.fname = 'milk';
-select t.fname Type, count(p.fname) from type t join product p on t.id = p.type_id group by t.fname having count(p.fname) < 10;
-select product.fname Product, type.fname Type from product join type on product.type_id = type.id;
+--запрос получение всех продуктов с типом "СЫР"
+select product.fname
+from product
+join type
+on product.type_id = type.id
+where type.fname = 'cheese';
+
+--запрос получения всех продуктов, у кого в имени есть слово "мороженое"
+select product.fname
+from product
+join type
+on product.type_id = type.id
+where product.fname
+like '%icecream%';
+
+--запрос, который выводит все продукты, срок годности которых уже истек
+select product.fname, product.expired_date
+from product
+join type
+on product.type_id = type.id
+where expired_date < current_date
+order by expired_date;
+
+--запрос, который выводит самый дорогой продукт.
+select product.fname, product.price
+from product
+where product.price =
+(select max(p1.price)
+from product p1);
+
+--запрос, который выводит для каждого типа количество продуктов к нему принадлежащих. В виде имя_типа, количество
+select t.fname, count(p.fname)
+from type t
+join product p
+on t.id = p.type_id
+group by t.fname;
+
+--запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
+select product.fname
+from product
+join type
+on product.type_id = type.id
+where type.fname = 'cheese'
+or type.fname = 'milk';
+
+--запрос, который выводит тип продуктов, которых осталось меньше 10 штук.
+select t.fname Type, count(p.fname)
+from type t
+join product p
+on t.id = p.type_id
+group by t.fname
+having count(p.fname) < 10;
+
+select product.fname Product, type.fname Type
+from product
+join type
+on product.type_id = type.id;
