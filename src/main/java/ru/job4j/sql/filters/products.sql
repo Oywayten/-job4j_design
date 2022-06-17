@@ -6,12 +6,14 @@ fname varchar(255)
 create table product(
 id serial primary key ,
 fname varchar(255) ,
-type_id int,
+type_id int references type(id),
 expired_date date,
 price float
 );
 
-insert into type (fname) values ('cheese'), ('milk'), ('icecream');
+insert into type (fname)
+values ('cheese'), ('milk'), ('icecream');
+
 insert into product (fname, type_id, expired_date, price) values
 ('hochland', 1, '2022-06-15', 200.03),
 ('mozzarella', 1, '2022-02-01', 250.03),
@@ -83,3 +85,4 @@ select product.fname Product, type.fname Type
 from product
 join type
 on product.type_id = type.id;
+
