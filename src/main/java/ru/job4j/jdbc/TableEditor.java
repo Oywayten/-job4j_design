@@ -9,8 +9,13 @@ import java.util.Properties;
 import java.util.StringJoiner;
 
 public class TableEditor implements AutoCloseable {
-
+    /**
+     * настройки для подключения
+     */
     private final Properties properties;
+    /**
+     * соединение с базой данных
+     */
     private Connection connection;
 
     public TableEditor(Properties properties) throws SQLException, ClassNotFoundException {
@@ -18,6 +23,14 @@ public class TableEditor implements AutoCloseable {
         initConnection();
     }
 
+    /**
+     * отрисовывает таблицу для проверки состояния
+     *
+     * @param connection соединение с базой
+     * @param tableName  имя таблицы
+     * @return возвращает строковое представление базы данных с префиксом, данными и суффиксом
+     * @throws Exception при возникновении ошибок
+     */
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
         var rowSeparator = "-".repeat(30).concat(System.lineSeparator());
         var header = String.format("%-15s|%-15s%n", "NAME", "TYPE");
@@ -57,6 +70,12 @@ public class TableEditor implements AutoCloseable {
         }
     }
 
+    /**
+     * Метод устанавливаем connection для экземляра
+     *
+     * @throws ClassNotFoundException если класс не найден
+     * @throws SQLException           в случае ошибка SQL
+     */
     private void initConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = properties.getProperty("url");
@@ -113,7 +132,9 @@ public class TableEditor implements AutoCloseable {
     }
 
     /**
-     * @param tableName  удаляет столбец из таблицы;
+     * метод удаляет столбец из таблицы
+     *
+     * @param tableName  имя таблицы
      * @param columnName имя столбца для удаления
      * @throws SQLException ошибка SQL
      */
