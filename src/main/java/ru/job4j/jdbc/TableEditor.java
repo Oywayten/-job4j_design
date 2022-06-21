@@ -1,6 +1,6 @@
 package ru.job4j.jdbc;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,37 +37,33 @@ public class TableEditor implements AutoCloseable {
         var buffer = new StringJoiner(rowSeparator, rowSeparator, rowSeparator);
         buffer.add(header);
         try (var statement = connection.createStatement()) {
-            var selection = statement.executeQuery(String.format(
-                    "select * from %s limit 1", tableName
-            ));
+            var selection = statement.executeQuery(String.format("select * from %s limit 1", tableName));
             var metaData = selection.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                buffer.add(String.format("%-15s|%-15s%n",
-                        metaData.getColumnName(i), metaData.getColumnTypeName(i))
-                );
+                buffer.add(String.format("%-15s|%-15s%n", metaData.getColumnName(i), metaData.getColumnTypeName(i)));
             }
         }
         return buffer.toString();
     }
 
-    public static void main(String[] args) throws Exception {
-        String path = "src/main/java/ru/job4j/jdbc/app.properties";
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(path));
-        try (TableEditor tableEditor = new TableEditor(properties)) {
-            String tableName1 = "test_devices";
-            tableEditor.createTable(tableName1);
-            System.out.println(getTableScheme(tableEditor.connection, tableName1));
-            tableEditor.addColumn(tableName1, "id", "serial primary key");
-            tableEditor.addColumn(tableName1, "fname", "varchar(255)");
-            tableEditor.addColumn(tableName1, "price", "float");
-            System.out.println(getTableScheme(tableEditor.connection, tableName1));
-            tableEditor.renameColumn(tableName1, "price", "fprice");
-            System.out.println(getTableScheme(tableEditor.connection, tableName1));
-            tableEditor.dropColumn(tableName1, "fprice");
-            System.out.println(getTableScheme(tableEditor.connection, tableName1));
-            tableEditor.dropTable(tableName1);
+    public static TableEditor of(String fileName) throws Exception {
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream(fileName)) {
+            config.load(in);
+            return new TableEditor(config);
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        TableEditor tableEditor = of("app.properties");
+        String tableName1 = "test_devices";
+        tableEditor.createTable(tableName1);
+        tableEditor.addColumn(tableName1, "id", "serial primary key");
+        tableEditor.addColumn(tableName1, "fname", "varchar(255)");
+        tableEditor.addColumn(tableName1, "price", "float");
+        tableEditor.renameColumn(tableName1, "price", "fprice");
+        tableEditor.dropColumn(tableName1, "fprice");
+        tableEditor.dropTable(tableName1);
     }
 
     /**
@@ -85,14 +81,18 @@ public class TableEditor implements AutoCloseable {
     }
 
     /**
-     * Приватный метод для выполнения запросов
+     * Приватный метод для выполнения запросов и отрисовки таблицы
      *
-     * @param s строка запроса
-     * @throws SQLException ошибка SQL
+     * @param request   срока запроса
+     * @param tableName имя таблицы для отрисовки
+     * @throws Exception ошибки
      */
-    private void execute(String s) throws SQLException {
+    private void execute(String request, String tableName) throws Exception {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(s);
+            statement.executeUpdate(request);
+        }
+        if (!request.startsWith("drop table")) {
+            System.out.println(getTableScheme(connection, tableName));
         }
     }
 
@@ -102,9 +102,9 @@ public class TableEditor implements AutoCloseable {
      * @param tableName имя таблицы
      * @throws SQLException ошибка SQL
      */
-    public void createTable(String tableName) throws SQLException {
+    public void createTable(String tableName) throws Exception {
         String s = String.format("create table IF NOT EXISTS %s()", tableName);
-        execute(s);
+        execute(s, tableName);
     }
 
     /**
@@ -113,9 +113,9 @@ public class TableEditor implements AutoCloseable {
      * @param tableName имя таблицы
      * @throws SQLException ошибка SQL
      */
-    public void dropTable(String tableName) throws SQLException {
+    public void dropTable(String tableName) throws Exception {
         String s = String.format("drop table %s", tableName);
-        execute(s);
+        execute(s, tableName);
     }
 
     /**
@@ -126,9 +126,9 @@ public class TableEditor implements AutoCloseable {
      * @param type       тип столбца
      * @throws SQLException ошибка SQL
      */
-    public void addColumn(String tableName, String columnName, String type) throws SQLException {
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
         String s = String.format("ALTER TABLE %s ADD COLUMN IF NOT EXISTS %s %s", tableName, columnName, type);
-        execute(s);
+        execute(s, tableName);
     }
 
     /**
@@ -138,9 +138,9 @@ public class TableEditor implements AutoCloseable {
      * @param columnName имя столбца для удаления
      * @throws SQLException ошибка SQL
      */
-    public void dropColumn(String tableName, String columnName) throws SQLException {
+    public void dropColumn(String tableName, String columnName) throws Exception {
         String s = String.format("ALTER TABLE %s DROP COLUMN IF EXISTS %s", tableName, columnName);
-        execute(s);
+        execute(s, tableName);
     }
 
     /**
@@ -151,9 +151,9 @@ public class TableEditor implements AutoCloseable {
      * @param newColumnName новое имя столбца
      * @throws SQLException ошибка SQL
      */
-    public void renameColumn(String tableName, String columnName, String newColumnName) throws SQLException {
+    public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
         String s = String.format("ALTER TABLE %s RENAME %s TO %s;", tableName, columnName, newColumnName);
-        execute(s);
+        execute(s, tableName);
     }
 
     @Override
