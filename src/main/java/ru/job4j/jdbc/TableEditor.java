@@ -55,15 +55,16 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        TableEditor tableEditor = of("app.properties");
-        String tableName1 = "test_devices";
-        tableEditor.createTable(tableName1);
-        tableEditor.addColumn(tableName1, "id", "serial primary key");
-        tableEditor.addColumn(tableName1, "fname", "varchar(255)");
-        tableEditor.addColumn(tableName1, "price", "float");
-        tableEditor.renameColumn(tableName1, "price", "fprice");
-        tableEditor.dropColumn(tableName1, "fprice");
-        tableEditor.dropTable(tableName1);
+        try (TableEditor tableEditor = of("app.properties")) {
+            String tableName1 = "test_devices";
+            tableEditor.createTable(tableName1);
+            tableEditor.addColumn(tableName1, "id", "serial primary key");
+            tableEditor.addColumn(tableName1, "fname", "varchar(255)");
+            tableEditor.addColumn(tableName1, "price", "float");
+            tableEditor.renameColumn(tableName1, "price", "fprice");
+            tableEditor.dropColumn(tableName1, "fprice");
+            tableEditor.dropTable(tableName1);
+        }
     }
 
     /**
