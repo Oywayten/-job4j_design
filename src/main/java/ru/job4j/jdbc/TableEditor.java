@@ -46,16 +46,12 @@ public class TableEditor implements AutoCloseable {
         return buffer.toString();
     }
 
-    public static TableEditor of(String fileName) throws Exception {
-        Properties config = new Properties();
-        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream(fileName)) {
-            config.load(in);
-            return new TableEditor(config);
-        }
-    }
-
     public static void main(String[] args) throws Exception {
-        try (TableEditor tableEditor = of("app.properties")) {
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("app.properties")) {
+            config.load(in);
+        }
+        try (TableEditor tableEditor = new TableEditor(config)) {
             String tableName1 = "test_devices";
             tableEditor.createTable(tableName1);
             tableEditor.addColumn(tableName1, "id", "serial primary key");
