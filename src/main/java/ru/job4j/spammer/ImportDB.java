@@ -51,7 +51,13 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            rd.lines().map(s -> s.split(";")).forEach(s -> users.add(new User(s[0], s[1])));
+            rd.lines()
+                    .map(s -> s.split(";"))
+                    .filter(strings -> strings.length == 2
+                            && strings[1].matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-]"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)" + "*(\\.[A-Z" + "a-z]{2,})$")
+                            && strings[0].matches("(?=.{1,255})[a-zA-Z]+[ ][a-zA-Z]+"))
+                    .forEach(s -> users.add(new User(s[0], s[1])));
         }
         return users;
     }
