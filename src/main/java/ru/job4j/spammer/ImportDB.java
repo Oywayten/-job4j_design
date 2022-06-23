@@ -53,10 +53,16 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines()
                     .map(s -> s.split(";"))
-                    .filter(strings -> strings.length == 2
-                            && strings[1].matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-]"
-                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)" + "*(\\.[A-Z" + "a-z]{2,})$")
-                            && strings[0].matches("(?=.{1,255})[a-zA-Z]+[ ][a-zA-Z]+"))
+                    .filter(strings -> {
+                        boolean b = strings.length == 2
+                                && strings[1].matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-]"
+                                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
+                                && strings[0].matches("(?=.{1,255})[a-zA-Z]+[ ][a-zA-Z]+");
+                        if (!b) {
+                            throw new IllegalArgumentException("Invalid string in datalist");
+                        }
+                        return b;
+                    })
                     .forEach(s -> users.add(new User(s[0], s[1])));
         }
         return users;
