@@ -46,5 +46,9 @@ select name from movie;
 
 select title from book
 union
-select name from movie;
+select name from movie
+except
+(select title from book
+intersect
+select name from movie);
 
