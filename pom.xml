@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.1</version>
+            <version>42.5.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -156,8 +156,7 @@
                         <configuration>
                             <finalName>CSVReader</finalName>
                             <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>ru.job4j.io.scanner.CSVReader.java</mainClass>
                                 </transformer>
                             </transformers>
